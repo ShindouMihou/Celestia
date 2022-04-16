@@ -12,7 +12,7 @@ docker build -t celestia .
 
 Afterwards, you can create a new container from the image via:
 ```shell
-docker run -d -i -t -p 3000:3000 --restart=always --name celestia celestia
+docker run -d -i -t --env-file .env -p 3000:3000 --restart=always --name celestia celestia
 ```
 
 ## 📓 Configuration
