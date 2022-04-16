@@ -1,0 +1,6 @@
+#--------------
+# MongoDB Connection
+# This can be used to boot up a simple MongoDB container for Celestia.
+#---------------
+MONGO_INITDB_ROOT_USERNAME=celestia
+MONGO_INITDB_ROOT_PASSWORD=celestia

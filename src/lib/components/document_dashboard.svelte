@@ -61,6 +61,10 @@
         });
     }
 </script>
+<svelte:head>
+    <title>Celestia | {_id}</title>
+</svelte:head>
+
 <div class="py-12 flex flex-col-reverse md:flex-row gap-4 w-full">
     <div class="bg-white rounded md:w-72 drop-shadow-md">
         <div class="flex flex-col p-3 gap-4">
