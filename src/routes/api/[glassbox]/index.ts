@@ -8,7 +8,6 @@ async function ask(params, query: URLSearchParams) {
     let additionalQueries = query.has('json') ? JSON.parse(Buffer.from(query.get('json'), 'base64url').toString()) : {};
     let additionalParameters = query.has('json') ? `&json=${query.get('json')}` : '';
 
-    console.log(additionalQueries)
     if (query.has('last')) {
         additionalQueries._id = {
             // $lt = latest

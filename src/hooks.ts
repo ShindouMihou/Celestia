@@ -10,6 +10,8 @@ export async function handle({ event, resolve }) {
     let url = new URL(event.request.url);
     let signed = false;
 
+    console.log(`${event.request.method} ${url.href}; ${event.request.headers.get('user-agent')};`)
+
     event.locals = {
         authenticated: false
     }
