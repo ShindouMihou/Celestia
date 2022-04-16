@@ -12,7 +12,16 @@ const config = {
   ],
 
   kit: {
-    adapter: adapter(),
+    adapter: adapter(
+      {
+        precompress: true
+      }
+    ),
+    vite: {
+      ssr: {
+        noExternal: ["svelte-hero-icons"],
+      },
+    },
   },
 };
 

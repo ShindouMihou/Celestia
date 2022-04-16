@@ -1,0 +1,108 @@
+<script>
+    import Document from "$lib/components/document.svelte";
+    import GlassboxLoader from "$lib/components/loaders/glassbox_loader.svelte";
+    import { onMount } from "svelte";
+    import axios from 'axios';
+    import { fade } from "svelte/transition";
+    import { page } from "$app/stores"
+
+    let glassbox = '...';
+    let documents;
+    let _id = '...';
+    let document;
+    let reserved = ["_id", "_message", "_event", "_date"];
+    
+    onMount(async () => {
+        if (!(window.location.pathname.split('/')[2] && window.location.pathname.split('/')[3])) {
+            setTimeout(() => window.location.href = '/dashboard', 1500);
+        }
+
+        glassbox = window.location.pathname.split('/')[2];
+        _id = window.location.pathname.split('/')[3];
+
+        axios.get(`/api/${glassbox}/?last=${_id}&limit=5`).then(response => {
+            documents = response.data.data;
+        }).catch(err => {
+            if (err.response) {
+                switch(err.response.status) {
+                    case 401: setTimeout(() => window.location.href = '/gateway', 1500);
+                    case 500: {
+                        console.error(err.response)
+                    };
+                }
+            } else {
+                console.error(err);
+            }
+        });
+       
+        axios.get(`/api/${glassbox}/${_id}`).then(response => {
+            document = response.data;
+
+            if (!document) {
+                setTimeout(() => window.location.href = '/dashboard', 1500);
+            }
+        }).catch(err => {
+            if (err.response) {
+                switch(err.response.status) {
+                    case 401: setTimeout(() => window.location.href = '/gateway', 1500);
+                    case 500: {
+                        console.error(err.response)
+                    };
+                }
+            } else {
+                console.error(err);
+            }
+        });
+    });
+
+    function extras() {
+        return Object.entries(document).filter(([key, value]) => {
+           return !reserved.includes(key) 
+        });
+    }
+</script>
+<div class="py-12 flex flex-col-reverse md:flex-row gap-4 w-full">
+    <div class="bg-white rounded md:w-72 drop-shadow-md">
+        <div class="flex flex-col p-3 gap-4">
+            <h2 class="text-lg font-bold">{glassbox}</h2>
+            <div class="flex flex-col gap-1" id="glassboxes">
+                {#if documents == null}
+                    {#each { length: 5 } as _, i}
+                    <GlassboxLoader></GlassboxLoader>
+                    {/each}
+                {:else}
+                    {#each documents as item}
+                    <Document glassbox="{glassbox}" event="{item._event}" id="{item._id}" date="{item._date}"></Document>
+                    {/each}
+                {/if}
+            </div>
+        </div>
+    </div>
+    <div class="bg-white rounded drop-shadow-md md:w-96 flex-grow">
+        <div class="flex flex-col gap-4 p-4">
+            {#if document == null}
+            <div class="w-full h-full bg-gray-100 animate-pulse p-32" transition:fade></div>
+            {:else}
+            <div class="flex flex-col gap-2" id="document[base]" transition:fade>
+                <div class="flex flex-col gap-2" id="document[head]">
+                    <div>
+                        <h2 class="text-lg font-bold">{document._id}</h2>
+                        <p class="text-md font-medium">{document._event} • {new Date(document._date).toString()}</p>
+                    </div>
+                </div>
+                <div class="bg-gray-100 rounded p-4">
+                    <p>{document._message}</p>
+                </div>
+                <div class="flex flex-row gap-4 flex-wrap">
+                    {#each extras() as item}
+                    <div class="bg-gray-100 rounded p-4">
+                        <h3 class="text-md font-bold uppercase">{item[0]}</h3>
+                        <p class="text-md font-light">{item[1]}</p>
+                    </div>
+                    {/each}
+                </div>
+            </div>
+            {/if}
+        </div>
+    </div>
+</div>

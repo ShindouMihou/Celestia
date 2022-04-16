@@ -1,18 +1,14 @@
 import { MongoClient } from 'mongodb';
 import configuration from './configuration';
 
-let _client: MongoClient;
+let _mongoInstance: MongoClient = null;
 
-export const client = async () => {
-    if (!_client) {
-        _client = await new MongoClient(configuration('MONGO_URI'), {
-            servername: 'Celestia'
-        }).connect();
+export default {
+    getClient: async () => {
+        if (_mongoInstance == null) {
+            _mongoInstance = await MongoClient.connect(configuration('MONGO_URI'))
+        }
 
-        return _client;
+        return _mongoInstance;
     }
-};
-
-export const celebi = async () => {
-    return (await client()).db('celebi');
-};
+}
