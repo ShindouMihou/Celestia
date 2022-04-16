@@ -1,38 +1,22 @@
-# create-svelte
+![image](https://user-images.githubusercontent.com/69381903/163691703-020f241f-50d8-474b-94e2-b368ba64504f.png)
+# 🌇 Celestia
+Celestia is the formal successor to Celebi's front-end client and REST API which aims to make logging more beautiful than before. Unlike Celebi, Celestia uses a single access token located in your `.env` file for authentication which thereby saves time and effort of creating accounts.
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Also unlike Celebi, Celestia is powered by Sveltekit all the way which allows reactivity, creating a more dynamic look of the pages.
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm init svelte
-
-# create a new project in my-app
-npm init svelte my-app
+## 📦 Installation
+If you do not already have a Celebi MongoDB Docker running then you can upstart one by running the `docker-compose up -d` which generates a MongoDB Docker but this doesn't include the Celebi Docker itself. To install Celestia, all you need to do is run the following command:
+```shell
+docker build -t celestia .
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+Afterwards, you can create a new container from the image via:
+```shell
+docker run -d -i -t -p 3000:3000 --restart=always --name celestia celestia
 ```
 
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+## 📓 Configuration
+There are three required configuration for Celestia and those include:
+- `MONGO_URI`: The connection URI to the MongoDB instance.
+- `ACCESS_TOKEN`: The public-facing access-token required by users to view the logs.
+- `APP_SIGNATURE`: A special private signature used to sign the cookies.
