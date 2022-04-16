@@ -35,11 +35,11 @@ export async function handle({ event, resolve }) {
     }
 
     if (!signed && (url.pathname.includes('/dashboard') || (url.pathname.includes('/api') && !url.pathname.includes('/api/auth')))) {
-        return Response.redirect(event.url.origin+"/gateway");
+        return Response.redirect(url.origin+"/gateway");
     }
 
     if (signed && url.pathname.includes('/gateway')) {
-        return Response.redirect(event.url.origin+"/dashboard");
+        return Response.redirect(url.origin+"/dashboard");
     }
 
     return response;
