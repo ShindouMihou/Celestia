@@ -47,7 +47,7 @@ const decoders: Decoder[] = [
         transformer: (value: string) => Number.parseInt(value)
     },
     {
-        keyword: "Bool",
+        keyword: "Boolean",
         transformer: (value: string) => (value === 'true')
     }
 ]
