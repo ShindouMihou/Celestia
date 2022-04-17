@@ -52,7 +52,7 @@
 <div class="py-12 flex flex-col-reverse md:flex-row gap-4 w-full">
     <div class="bg-white rounded md:w-72 drop-shadow-md">
         <div class="flex flex-col p-3 gap-4">
-            <h2 class="text-lg font-bold">{glassbox}</h2>
+            <h2 class="text-lg font-bold break-words">{glassbox}</h2>
             <div class="flex flex-col gap-1" id="glassboxes">
                 {#if documents == null}
                     {#each { length: 5 } as _, i}
@@ -74,18 +74,18 @@
             <div class="flex flex-col gap-2" id="document[base]" transition:fade>
                 <div class="flex flex-col gap-2" id="document[head]">
                     <div>
-                        <h2 class="text-lg font-bold">{document._id}</h2>
-                        <p class="text-md font-medium">{document._event} • {new Date(document._date).toString()}</p>
+                        <h2 class="text-lg font-bold break-words">{document._id}</h2>
+                        <p class="text-md font-medium break-words">{document._event} • {new Date(document._date).toString()}</p>
                     </div>
                 </div>
                 <div class="bg-gray-100 rounded p-4">
-                    <p>{document._message}</p>
+                    <p class="break-words">{document._message}</p>
                 </div>
                 <div class="flex flex-row gap-4 flex-wrap">
                     {#each extras() as item}
                     <div class="bg-gray-100 rounded p-4">
-                        <h3 class="text-md font-bold uppercase">{item[0]}</h3>
-                        <p class="text-md font-light">{item[1]}</p>
+                        <h3 class="text-md font-bold uppercase break-words">{item[0]}</h3>
+                        <p class="text-md font-light break-words">{item[1]}</p>
                     </div>
                     {/each}
                 </div>
