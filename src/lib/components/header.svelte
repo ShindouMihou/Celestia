@@ -1,6 +1,8 @@
-<header class="flex flex-row justify-between pb-6">
+<header class="flex flex-row justify-between pb-6 px-4 items-center">
     <div id="_externs">
-        <slot/>
+        <div class="flex flex-row gap-4 items-center">
+            <slot/>
+        </div>
     </div>
     <div id="_header">
         <h1 class="text-3xl font-bold uppercase montserrat">Celestia</h1>
