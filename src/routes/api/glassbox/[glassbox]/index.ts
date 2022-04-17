@@ -1,6 +1,6 @@
 import mongo from '$lib/mongo'
 import { ObjectId } from 'mongodb';
-
+import configuration from '$lib/configuration';
 
 async function ask(params, query: URLSearchParams) {
     const limit = query.get('limit') ? Number.parseInt(query.get('limit')) ?? 24 : 24; // lowkey means limit definied then use that else 24.
@@ -16,7 +16,7 @@ async function ask(params, query: URLSearchParams) {
         }
     }
 
-    const result = (await mongo.getClient()).db('celebi').collection(params.glassbox).find(additionalQueries);
+    const result = (await mongo.getClient()).db(configuration('MONGO_DATABASE')).collection(params.glassbox).find(additionalQueries);
     const cursor = result.limit(limit).sort({ '_id': -1 })
 
     const data = (await cursor.toArray()).flat();
