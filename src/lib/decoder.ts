@@ -45,6 +45,10 @@ const decoders: Decoder[] = [
     {
         keyword: "Int",
         transformer: (value: string) => Number.parseInt(value)
+    },
+    {
+        keyword: "Bool",
+        transformer: (value: string) => (value === 'true')
     }
 ]
 
@@ -63,7 +67,9 @@ export default (query) => {
                         json[property[0]] = decode(property, decoder.keyword, decoder.transformer);
                     }
                 }
-                console.log(json[property[0]]);
+            } else if(element.startsWith(':')) { // all properties that starts with $* are recognized as special operations.
+                const property: string[] = element.split('=', 2);
+                json[property[0]] = property[1];
             }
         });
     } else {
