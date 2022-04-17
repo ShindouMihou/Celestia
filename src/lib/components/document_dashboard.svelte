@@ -4,7 +4,6 @@
     import { onMount } from "svelte";
     import axios from 'axios';
     import { fade } from "svelte/transition";
-    import { page } from "$app/stores"
 
     let glassbox = '...';
     let documents;

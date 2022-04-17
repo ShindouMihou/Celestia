@@ -34,12 +34,20 @@ export async function handle({ event, resolve }) {
         response.headers.append('Set-Cookie', 'firefly=; Path=/; Max-Age=-1');
     }
 
+    const origin = url.protocol + "//" + url.host;
+    
     if (!signed && (url.pathname.includes('/dashboard') || (url.pathname.includes('/api') && !url.pathname.includes('/api/auth')))) {
-        return Response.redirect(url.origin+"/gateway");
+        return new Response('', { status: 303, headers: {
+            Location: origin+"/gateway",
+            'Set-Cookie': 'firefly=; Path=/; Max-Age=-1'
+        }});
     }
 
     if (signed && url.pathname.includes('/gateway')) {
-        return Response.redirect(url.origin+"/dashboard");
+        return new Response('', { status: 303, headers: {
+            Location: origin+"/gateway",
+            'Set-Cookie': 'firefly=; Path=/; Max-Age=-1'
+        }});
     }
 
     return response;
