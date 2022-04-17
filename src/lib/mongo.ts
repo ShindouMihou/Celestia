@@ -5,10 +5,14 @@ let _mongoInstance: MongoClient = null;
 
 export default {
     getClient: async () => {
-        if (_mongoInstance == null) {
-            _mongoInstance = await MongoClient.connect(configuration('MONGO_URI'))
+        try {
+            if (_mongoInstance == null) {
+                _mongoInstance = await MongoClient.connect(configuration('MONGO_URI'))
+            }
+    
+            return _mongoInstance;
+        } catch (err) {
+            console.error('Please check your connection with your MongoDB instance.')
         }
-
-        return _mongoInstance;
     }
 }

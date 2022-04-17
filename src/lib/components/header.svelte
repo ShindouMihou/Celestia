@@ -4,7 +4,7 @@
             <slot/>
         </div>
     </div>
-    <div id="_header">
+    <div id="_header" class="flex flex-row items-center">
         <h1 class="text-3xl font-bold uppercase montserrat">Celestia</h1>
     </div>
 </header>
