@@ -7,6 +7,7 @@
     import decoder from '$lib/decoder'
     import { catchAxiosError, reportTelemetry } from "$lib/telemetry";
     import { UrlManipulator } from '$lib/url'
+import { Icon, QuestionMarkCircle } from "svelte-hero-icons";
 
     let glassboxes: any[];
     let glassbox: string;
@@ -113,7 +114,12 @@
 <div class="py-12 flex flex-col gap-4 w-full max-w-[3168px] m-auto">
     <div class="bg-white rounded w-full drop-shadow-md">
         <div class="flex flex-col p-3 gap-2">
-            <h2 class="text-lg font-bold">Filter</h2>
+            <div class="flex flex-row gap-1 items-center">
+                <h2 class="text-lg font-bold">Filter</h2>
+                <a href="https://github.com/ShindouMihou/Celestia/blob/master/documentations/filters.md" rel="external" target="_blank">
+                    <Icon src={QuestionMarkCircle} class="h-4 w-4 hover:text-blue-500 duration-300"></Icon>
+                </a>
+            </div>
             <textarea class="p-4 text-md font-light bg-gray-100 rounded outline-none" placeholder="FIELD=VALUE" id="_filter"></textarea>
             <button class="cursor-pointer" on:click={filter} transition:fade>
                 <div class="bg-black text-white rounded p-2 flex flex-col hover:opacity-80 gap-4 lg:w-32">
