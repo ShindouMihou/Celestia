@@ -61,7 +61,7 @@
      * into the page.
      */
     async function load() {
-        return request(`/api/${glassbox}`, (response) => {
+        return request(`/api/glassbox/${glassbox}`, (response) => {
             documents = response.data.data;
             next = response.data.next;
         }).then(() => document.querySelector('#documents').scrollIntoView({
@@ -97,7 +97,7 @@
         }
         
         if (glassbox) {
-            request(`/api/${glassbox}?json=${btoa(JSON.stringify(decoder(query)))}`, (response) => {
+            request(`/api/glassbox/${glassbox}?json=${btoa(JSON.stringify(decoder(query)))}`, (response) => {
                 documents = response.data.data;
                 next = response.data.next;
             }).then(() => document.querySelector('#documents').scrollIntoView({

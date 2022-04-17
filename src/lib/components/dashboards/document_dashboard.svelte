@@ -24,12 +24,12 @@
         _id = url.get(3);
 
         axios
-            .get(`/api/${glassbox}/?last=${_id}&limit=5`)
+            .get(`/api/glassbox/${glassbox}/?last=${_id}&limit=5`)
             .then(response =>  documents = response.data.data)
             .catch(err => catchAxiosError(window, err));
        
         axios
-            .get(`/api/${glassbox}/${_id}`).then(response => {
+            .get(`/api/glassbox/${glassbox}/${_id}`).then(response => {
                 document = response.data;
 
                 if (!document) {
