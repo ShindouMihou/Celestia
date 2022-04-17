@@ -129,7 +129,7 @@ import { Icon, QuestionMarkCircle } from "svelte-hero-icons";
         </div>
     </div>
     <div class="flex flex-col md:flex-row gap-4 w-full">
-        <div class="bg-white rounded md:w-72 max-h-[1080px] drop-shadow-md">
+        <div class="bg-white rounded md:w-72 max-h-fit drop-shadow-md">
             <div class="flex flex-col p-3 gap-4">
                 <h2 class="text-lg font-bold">Glassboxes</h2>
                 <div class="flex flex-col gap-1 max-h-[1080px] scroll-px-4 scroll-mx-4 overflow-y-auto" id="glassboxes">
