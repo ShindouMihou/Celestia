@@ -1,0 +1,8 @@
+.svelte-kit
+build
+node_modules
+.dev
+.dev.example
+.env.example
+backend
+documentations
