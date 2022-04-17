@@ -61,7 +61,7 @@ import { Icon, QuestionMarkCircle } from "svelte-hero-icons";
      * Loads the data from the glassbox and allow Svelte to display the results 
      * into the page.
      */
-    async function load() {
+    async function load() {        
         return request(`/api/glassbox/${glassbox}`, (response) => {
             documents = response.data.data;
             next = response.data.next;
@@ -97,7 +97,7 @@ import { Icon, QuestionMarkCircle } from "svelte-hero-icons";
             return;
         }
         
-        if (glassbox) {
+        if (glassbox) {            
             request(`/api/glassbox/${glassbox}?json=${btoa(JSON.stringify(decoder(query)))}`, (response) => {
                 documents = response.data.data;
                 next = response.data.next;
