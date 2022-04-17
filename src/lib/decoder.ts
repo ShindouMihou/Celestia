@@ -53,6 +53,70 @@ const decoders: Decoder[] = [
     {
         keyword: "BigInt",
         transformer: (value: string) => BigInt(value)
+    },
+    {
+        keyword: "Gte",
+        transformer: (value: string) => {
+            return {
+                $gte: Number.parseInt(value)
+            }
+        }
+    },
+    {
+        keyword: "Gt",
+        transformer: (value: string) => {
+            return {
+                $gte: Number.parseInt(value)
+            }
+        }
+    },
+    {
+        keyword: "Eq",
+        transformer: (value: string) => {
+            return {
+                $eq: value
+            }
+        }
+    },
+    {
+        keyword: "Lt",
+        transformer: (value: string) => {
+            return {
+                $lt: Number.parseInt(value)
+            }
+        }
+    },
+    {
+        keyword: "Lte",
+        transformer: (value: string) => {
+            return {
+                $lte: Number.parseInt(value)
+            }
+        }
+    },
+    {
+        keyword: "Ne",
+        transformer: (value: string) => {
+            return {
+                $ne: value
+            }
+        }
+    },
+    {
+        keyword: "In",
+        transformer: (value: string) => {
+            return {
+                $in: value.split(',')
+            }
+        }
+    },
+    {
+        keyword: "Nin",
+        transformer: (value: string) => {
+            return {
+                $nin: value.split(',')
+            }
+        }
     }
 ]
 
