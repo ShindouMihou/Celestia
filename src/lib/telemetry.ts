@@ -11,12 +11,16 @@ export const reportTelemetry = (window: Window & typeof globalThis, message: Obj
 
 export const catchAxiosError = (window: Window & typeof globalThis, err: AxiosError) => {
     if (err.response) {
-        reportTelemetry(window, {
-            error: err,
-            response: err.response
-        }, 2);
+        if (err.response.status !== 400 && err.response.status !== 401) {
+            reportTelemetry(window, {
+                error: err,
+                response: err.response
+            }, 2);
+        }
+        
         switch(err.response.status) {
             case 401: setTimeout(() => window.location.href = '/gateway', 1500);
+            case 400: setTimeout(() => window.location.href = '/dashboard', 1500);
             case 500: {
                 console.error(err.response)
             };

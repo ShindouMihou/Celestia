@@ -65,7 +65,7 @@ async function ask(params, query: URLSearchParams) {
         return {
             body: {
                 errors: [
-                    err
+                    err.message
                 ]
             }, 
             status: 500

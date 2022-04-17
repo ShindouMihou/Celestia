@@ -7,19 +7,20 @@ export async function get({ params }) {
     try {
       const item = (await (await mongo.getClient()).db(configuration('MONGO_DATABASE')).collection(params.glassbox).findOne({
         _id: new ObjectId(params.document)
-    }))
+      }))
  
     return {
-      body: item
+      body: item,
+      status: item ? 200 : 404
     };
   } catch (err) {
-    console.error(err);
     return {
       body: {
         errors: [
-          err
+          err.message
         ]
-      }
+      },
+      status: 400
     }
   }
 }

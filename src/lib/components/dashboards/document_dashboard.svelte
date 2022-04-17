@@ -34,7 +34,7 @@
 
                 if (!document) {
                     reportTelemetry(window, response, 1);
-                    setTimeout(() => window.location.href = '/dashboard', 1500);
+                    setTimeout(() => window.location.reload(), 1500);
                 }
             }).catch(err => catchAxiosError(window, err));
     });
