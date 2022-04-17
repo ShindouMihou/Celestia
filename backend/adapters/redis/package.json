@@ -1,0 +1,18 @@
+{
+  "name": "celestia-redis",
+  "version": "1.0.0",
+  "description": "The Redis Pubsub adapter for the Celestia-Celebi backend.",
+  "main": "index.js",
+  "scripts": {
+    "libs": "mkdir -p src/lib/ && yes | cp -rf ../../lib/src/lib/* src/lib/",
+    "serve": "node ./src/index.js",
+    "test": "node ./src/test.js"
+  },
+  "author": "shindoumihou",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "mongodb": "^4.5.0",
+    "redis": "^4.0.6"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "lib",
+  "version": "1.0.0",
+  "description": "The library module for Celestia's Celebi backend.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "shindoumihou",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "mongodb": "^4.5.0"
+  }
+}
