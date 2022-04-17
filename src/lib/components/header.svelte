@@ -1,4 +1,4 @@
-<header class="flex flex-row justify-between pb-6 px-4 items-center">
+<header class="flex flex-row justify-between pb-6 px-4 items-center max-w-[3168px] m-auto">
     <div id="_externs">
         <div class="flex flex-row gap-4 items-center">
             <slot/>

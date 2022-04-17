@@ -110,7 +110,7 @@
     <title>Celestia | Dashboard</title>
 </svelte:head>
 
-<div class="py-12 flex flex-col gap-4 w-full">
+<div class="py-12 flex flex-col gap-4 w-full max-w-[3168px] m-auto">
     <div class="bg-white rounded w-full drop-shadow-md">
         <div class="flex flex-col p-3 gap-2">
             <h2 class="text-lg font-bold">Filter</h2>
