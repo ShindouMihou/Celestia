@@ -1,105 +1,108 @@
 <script lang="ts">
     import Document from "$lib/components/document.svelte";
-    import GlassboxLoader from "$lib/components/loaders/glassbox_loader.svelte";
+    import Loader from "$lib/components/loaders/loader.svelte";
     import { onMount } from "svelte";
-    import axios from 'axios';
+    import axios, { type AxiosResponse } from 'axios';
     import { fade } from "svelte/transition";
     import decoder from '$lib/decoder'
+    import { catchAxiosError, reportTelemetry } from "$lib/telemetry";
+    import { UrlManipulator } from '$lib/url'
 
-    let glassboxes;
-    let glassbox;
-    let next;
+    let glassboxes: any[];
+    let glassbox: string;
+    let next: string;
     let documents: any[];
+    let url;
 
     onMount(async () => {
-        axios.get('/api/glassboxes').then(response => {
-            glassboxes = response.data;
-        }).catch(err => {
-            if (err.response) {
-                switch(err.response.status) {
-                    case 401: setTimeout(() => window.location.href = '/gateway', 1500);
-                    case 500: {
-                        console.error(err.response)
-                    };
-                }
-            } else {
-                console.error(err);
-            }
-        });
+        url =  new UrlManipulator(window);
+        axios.get('/api/glassboxes')
+            .then(response => glassboxes = response.data)
+            .catch(err => catchAxiosError(window, err));
 
-        if (window.location.pathname.split('/')[2]) {
-            glassbox = window.location.pathname.split('/')[2];
-        }
+        url.ifPresent(2, (value: string) => glassbox = value);
 
         if (!glassbox) {
             documents = [];
-        } else {
-            load();
+            return;
         }
+
+        load();
     })
 
+    /**
+     * Performs a GET request to the specified URI and performs the given function if the 
+     * request is fulfilled otherwise catches the error and passes into telemetry.
+     * 
+     * @param uri   The URI resource to request.
+     * @param onFulfilled   The function to perform on successful.
+     */
+    async function request(uri: string, onFulfilled: (value: AxiosResponse<any, any>) => any) {
+        return axios.get(uri)
+            .then(value => onFulfilled(value))
+            .catch(err => catchAxiosError(window, err));
+    }
+
+    /**
+     * Transitions into the given glassbox.
+     * 
+     * @param glassBoxName  The name of the glassbox to move into.
+     */
     async function move(glassBoxName) {
         glassbox = glassBoxName;
         documents = null;
         window.history.pushState({}, '', `/dashboard/${glassbox}`);
+
         load();
     }
 
+    /**
+     * Loads the data from the glassbox and allow Svelte to display the results 
+     * into the page.
+     */
     async function load() {
-        axios.get(`/api/${glassbox}`).then(response => {
+        return request(`/api/${glassbox}`, (response) => {
             documents = response.data.data;
             next = response.data.next;
-        }).catch(err => {
-            if (err.response) {
-                switch(err.response.status) {
-                    case 401: setTimeout(() => window.location.href = '/gateway', 1500);
-                    case 500: {
-                        console.error(err.response)
-                    };
-                }
-            } else {
-                console.error(err);
-            }
-        });
+        }).then(() => document.querySelector('#documents').scrollIntoView({
+            behavior: 'smooth'
+        }));
     }
 
+    /**
+     * Loads more results of the current result, this requires the next variable 
+     * to be instiated and of a non-faulty value.
+     */
     async function loadMore() {
         if (next) {
-            axios.get(`${next}`).then(response => {
+            request(next, (response) => {
                 documents = documents.concat(response.data.data);
                 next = response.data.next;
-            }).catch(err => {
-                if (err.response) {
-                    switch(err.response.status) {
-                        case 401: setTimeout(() => window.location.href = '/gateway', 1500);
-                        case 500: {
-                            console.error(err.response)
-                        };
-                    }
-                } else {
-                    console.error(err);
-                }
             });
         }
     }
 
+    /**
+     * Loads the results of the glassbox with a specific query given to filter out the results. 
+     * This method accepts JSON and the simple Celebi-decoded which is a little modified variant of Dotenv files.
+     * - You can use Number(value) as a value to a property to translate the value into a number.
+     * - You can use Date(value) as a value to a property to translate the value into a date.
+     * - Those decoders are case-sensitive.
+     */
     async function filter() {
+        const query = document.querySelector('#_filter');
+        if (!query.value) {
+            load();
+            return;
+        }
+        
         if (glassbox) {
-            axios.get(`/api/${glassbox}?json=${btoa(JSON.stringify(decoder(document.querySelector('#_filter'))))}`).then(response => {
-            documents = response.data.data;
-            next = response.data.next;
-        }).catch(err => {
-            if (err.response) {
-                switch(err.response.status) {
-                    case 401: setTimeout(() => window.location.href = '/gateway', 1500);
-                    case 500: {
-                        console.error(err.response)
-                    };
-                }
-            } else {
-                console.error(err);
-            }
-        });
+            request(`/api/${glassbox}?json=${btoa(JSON.stringify(decoder(query)))}`, (response) => {
+                documents = response.data.data;
+                next = response.data.next;
+            }).then(() => document.querySelector('#documents').scrollIntoView({
+                behavior: 'smooth'
+            }));
         }
     }
 </script>
@@ -126,7 +129,7 @@
                 <div class="flex flex-col gap-1" id="glassboxes">
                     {#if glassboxes == null}
                         {#each { length: 5 } as _, i}
-                        <GlassboxLoader></GlassboxLoader>
+                        <Loader></Loader>
                         {/each}
                     {:else}
                         {#each glassboxes as item}
@@ -147,7 +150,7 @@
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-2" id="documents">
                     {#if documents == null}
                         {#each { length: 5 } as _, i}
-                        <GlassboxLoader></GlassboxLoader>
+                        <Loader></Loader>
                         {/each}
                     {:else}
                         {#each documents as item}

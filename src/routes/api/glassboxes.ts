@@ -10,6 +10,6 @@ export async function get() {
     }).flat()))
    
     return {
-      body: items
+        body: items
     };
 }

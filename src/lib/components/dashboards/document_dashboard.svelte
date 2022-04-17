@@ -1,57 +1,42 @@
 <script>
     import Document from "$lib/components/document.svelte";
-    import GlassboxLoader from "$lib/components/loaders/glassbox_loader.svelte";
+    import Loader from "$lib/components/loaders/loader.svelte";
     import { onMount } from "svelte";
     import axios from 'axios';
     import { fade } from "svelte/transition";
+    import { catchAxiosError, reportTelemetry } from "$lib/telemetry";
+    import { UrlManipulator } from "$lib/url";
 
     let glassbox = '...';
-    let documents;
     let _id = '...';
+
+    let documents;
     let document;
-    let reserved = ["_id", "_message", "_event", "_date"];
+
+    const reserved = ["_id", "_message", "_event", "_date"];
+    let url;
     
     onMount(async () => {
-        if (!(window.location.pathname.split('/')[2] && window.location.pathname.split('/')[3])) {
-            setTimeout(() => window.location.href = '/dashboard', 1500);
-        }
+        url = new UrlManipulator(window);
+        if (!(url.get(2) && url.get(3))) setTimeout(() => window.location.href = '/dashboard', 1500);
 
-        glassbox = window.location.pathname.split('/')[2];
-        _id = window.location.pathname.split('/')[3];
+        glassbox = url.get(2);
+        _id = url.get(3);
 
-        axios.get(`/api/${glassbox}/?last=${_id}&limit=5`).then(response => {
-            documents = response.data.data;
-        }).catch(err => {
-            if (err.response) {
-                switch(err.response.status) {
-                    case 401: setTimeout(() => window.location.href = '/gateway', 1500);
-                    case 500: {
-                        console.error(err.response)
-                    };
-                }
-            } else {
-                console.error(err);
-            }
-        });
+        axios
+            .get(`/api/${glassbox}/?last=${_id}&limit=5`)
+            .then(response =>  documents = response.data.data)
+            .catch(err => catchAxiosError(window, err));
        
-        axios.get(`/api/${glassbox}/${_id}`).then(response => {
-            document = response.data;
+        axios
+            .get(`/api/${glassbox}/${_id}`).then(response => {
+                document = response.data;
 
-            if (!document) {
-                setTimeout(() => window.location.href = '/dashboard', 1500);
-            }
-        }).catch(err => {
-            if (err.response) {
-                switch(err.response.status) {
-                    case 401: setTimeout(() => window.location.href = '/gateway', 1500);
-                    case 500: {
-                        console.error(err.response)
-                    };
+                if (!document) {
+                    reportTelemetry(window, response, 1);
+                    setTimeout(() => window.location.href = '/dashboard', 1500);
                 }
-            } else {
-                console.error(err);
-            }
-        });
+            }).catch(err => catchAxiosError(window, err));
     });
 
     function extras() {
@@ -71,7 +56,7 @@
             <div class="flex flex-col gap-1" id="glassboxes">
                 {#if documents == null}
                     {#each { length: 5 } as _, i}
-                    <GlassboxLoader></GlassboxLoader>
+                    <Loader></Loader>
                     {/each}
                 {:else}
                     {#each documents as item}

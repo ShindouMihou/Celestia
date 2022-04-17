@@ -1,5 +1,5 @@
 <script>
-    import DocumentDashboard from "$lib/components/document_dashboard.svelte";
+    import DocumentDashboard from "$lib/components/dashboards/document_dashboard.svelte";
 </script>
 
 <div>

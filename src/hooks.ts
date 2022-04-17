@@ -2,13 +2,13 @@
 import configuration from '$lib/configuration';
 import cookie from 'cookie';
 import cookieSignature from 'cookie-signature';
-import mongo from '$lib/mongo'
 
 export async function handle({ event, resolve }) {
     const cookies = cookie.parse(event.request.headers.get('cookie') || '')
     const token = cookies.firefly;
-    let url = new URL(event.request.url);
     let signed = false;
+
+    let url = new URL(event.request.url);
 
     console.log(`${event.request.method} ${url.href}; ${event.request.headers.get('user-agent')};`)
 

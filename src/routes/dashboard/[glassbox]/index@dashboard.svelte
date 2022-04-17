@@ -1,7 +1,7 @@
 <script>
-    import Dashboard from "$lib/components/dashboard.svelte";
+    import GlassboxDashboard from "$lib/components/dashboards/glassbox_dashboard.svelte";
 </script>
 
 <div>
-    <Dashboard></Dashboard>
+    <GlassboxDashboard></GlassboxDashboard>
 </div>
