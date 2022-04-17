@@ -4,11 +4,22 @@ import configuration from '$lib/configuration';
 
 /** @type {import('./items').RequestHandler} */
 export async function get({ params }) {
-    const item = (await (await mongo.getClient()).db(configuration('MONGO_DATABASE')).collection(params.glassbox).findOne({
+    try {
+      const item = (await (await mongo.getClient()).db(configuration('MONGO_DATABASE')).collection(params.glassbox).findOne({
         _id: new ObjectId(params.document)
     }))
-   
+ 
     return {
       body: item
     };
+  } catch (err) {
+    console.error(err);
+    return {
+      body: {
+        errors: [
+          err
+        ]
+      }
+    }
+  }
 }
