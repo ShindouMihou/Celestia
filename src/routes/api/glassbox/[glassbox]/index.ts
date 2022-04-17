@@ -46,7 +46,7 @@ async function ask(params, query: URLSearchParams) {
         try {
             return {
                 body: {
-                    next: `/api/${params.glassbox}/?last=${data[data.length - 1]._id}${additionalParameters}`,
+                    next: `/api/glassbox/${params.glassbox}/?last=${data[data.length - 1]._id}${additionalParameters}`,
                     data: data
                 },
                 status: 200
