@@ -133,8 +133,8 @@
                         {/each}
                     {:else}
                         {#each glassboxes as item}
-                        <div class="cursor-pointer" on:click={move(item.name)} transition:fade>
-                            <div class="bg-black text-white rounded p-4 flex flex-col hover:opacity-80 gap-4">
+                        <div class="cursor-pointer h-full" on:click={move(item.name)} transition:fade>
+                            <div class="bg-black h-full text-white rounded p-4 flex flex-col hover:opacity-80 gap-4">
                                 <h3 class="font-bold ">{item.name}</h3>
                                 <p>{Intl.NumberFormat().format(item.count)} documents</p>
                             </div>

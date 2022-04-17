@@ -7,8 +7,8 @@
 
     const _date = new Date(date)
 </script>
-<a href="/dashboard/{encodeURI(glassbox)}/{encodeURI(id)}" rel="external" transition:fade>
-    <div class="bg-black w-full text-white rounded p-4 flex flex-col gap-4 hover:opacity-80">
+<a href="/dashboard/{encodeURI(glassbox)}/{encodeURI(id)}" class="h-full" rel="external" transition:fade>
+    <div class="bg-black w-full h-full text-white rounded p-4 flex flex-col gap-4 hover:opacity-80">
         <div>
             <h3 class="font-bold uppercase break-words">{id}</h3>
             <p class="font-medium uppercase break-words">{event}</p>
