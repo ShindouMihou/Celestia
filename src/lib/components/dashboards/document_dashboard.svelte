@@ -78,9 +78,11 @@
                         <p class="text-md font-medium break-words">{document._event} • {new Date(document._date).toString()}</p>
                     </div>
                 </div>
+                {#if document._message}
                 <div class="bg-gray-100 rounded p-4">
                     <p class="break-words">{document._message}</p>
                 </div>
+                {/if}
                 <div class="flex flex-row gap-4 flex-wrap">
                     {#each extras() as item}
                     <div class="bg-gray-100 rounded p-4">
