@@ -49,6 +49,10 @@ const decoders: Decoder[] = [
     {
         keyword: "Boolean",
         transformer: (value: string) => (value === 'true')
+    },
+    {
+        keyword: "BigInt",
+        transformer: (value: string) => BigInt(value)
     }
 ]
 
