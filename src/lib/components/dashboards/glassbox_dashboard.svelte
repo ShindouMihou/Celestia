@@ -7,7 +7,7 @@
     import decoder from '$lib/decoder'
     import { catchAxiosError, reportTelemetry } from "$lib/telemetry";
     import { UrlManipulator } from '$lib/url'
-import { Icon, QuestionMarkCircle } from "svelte-hero-icons";
+    import { Icon, QuestionMarkCircle } from "svelte-hero-icons";
 
     let glassboxes: any[];
     let glassbox: string;
