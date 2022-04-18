@@ -153,7 +153,7 @@ import { Icon, QuestionMarkCircle } from "svelte-hero-icons";
         <div class="bg-white rounded drop-shadow-md md:w-96 flex-grow">
             <div class="flex flex-col gap-4 p-4">
                 <h2 class="text-lg font-bold">Documents</h2>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-2" id="documents">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-2" id="documents">
                     {#if documents == null}
                         {#each { length: 5 } as _, i}
                         <Loader></Loader>
