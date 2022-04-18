@@ -13,7 +13,5 @@ To explain this a bit, say we head to `/dashboard/` and press one of the followi
 <details>
     <summary>Further Explanation</summary>
 
-    If the answer chosen was no.2 then correct. Sveltekit doesn't know that the route exists and therefore leads you to 
-    a 404 error page. I don't know how to solve this without having to create duplicates of the same page, and so I decided 
-    to make each dashboard into a component itself while making both routes.
+If the answer chosen was no.2 then correct. Sveltekit doesn't know that the route exists and therefore leads you to a 404 error page. I don't know how to solve this without having to create duplicates of the same page, and so I decided to make each dashboard into a component itself while making both routes.
 </details>
