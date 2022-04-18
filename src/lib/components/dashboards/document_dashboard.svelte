@@ -69,9 +69,9 @@
     <div class="bg-white rounded drop-shadow-md md:w-96 flex-grow">
         <div class="flex flex-col gap-4 p-4">
             {#if document == null}
-            <div class="w-full h-full bg-gray-100 animate-pulse p-32" transition:fade></div>
+            <div class="w-full h-full bg-gray-100 animate-pulse p-32"></div>
             {:else}
-            <div class="flex flex-col gap-2" id="document[base]" transition:fade>
+            <div class="flex flex-col gap-2" id="document[base]">
                 <div class="flex flex-col gap-2" id="document[head]">
                     <div>
                         <h2 class="text-lg font-bold break-words">{document._id}</h2>
