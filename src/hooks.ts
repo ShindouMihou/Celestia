@@ -1,5 +1,6 @@
 
 import configuration from '$lib/configuration';
+import logger from '$lib/logger';
 import cookie from 'cookie';
 import cookieSignature from 'cookie-signature';
 
@@ -9,8 +10,12 @@ export async function handle({ event, resolve }) {
     let signed = false;
 
     let url = new URL(event.request.url);
-
-    console.log(`${event.request.method} ${url.href}; ${event.request.headers.get('user-agent')};`)
+    
+    logger.info({
+        method: event.request.method,
+        link: url.href,
+        agent: event.request.headers.get('user-agent')
+    })
 
     event.locals = {
         authenticated: false

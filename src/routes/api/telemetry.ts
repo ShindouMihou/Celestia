@@ -1,3 +1,5 @@
+import logger from "$lib/logger";
+
 /** @type {import('./items').RequestHandler} */
 export async function post({ request, locals }) {
     const telemetry = await request.json();
@@ -13,9 +15,15 @@ export async function post({ request, locals }) {
         };
     }
 
-    console.error(`REPORT ${telemetry.page}; ${telemetry.severity};`)
-    console.log(telemetry.message)
-    console.error(`END REPORT ${telemetry.page}; ${telemetry.severity}`)
+    logger.error({
+        errors: [
+            {
+                message: telemetry.message,
+                page: telemetry.page,
+                severity: telemetry.severity
+            }
+        ]
+    })
 
     return {
         status: 204,
