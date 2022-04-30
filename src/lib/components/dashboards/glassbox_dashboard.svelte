@@ -209,7 +209,7 @@
                         {#each glassboxes as item}
                         <div class="cursor-pointer h-full" on:click={move(item.name)} transition:fade>
                             <div class="component-box">
-                                <h3 class="font-bold ">{item.name}</h3>
+                                <h3 class="font-bold uppercase">{item.name}</h3>
                                 <p>{Intl.NumberFormat().format(item.count)} documents</p>
                             </div>
                         </div>
