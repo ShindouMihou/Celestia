@@ -60,13 +60,13 @@ You can add different kinds of fields directly to display them onto the client. 
 <details>
   <summary>Glassbox Viewer</summary>
   
-  ![image](https://user-images.githubusercontent.com/69381903/163735197-77ac06ef-2957-4554-b626-fa5716a82565.png)
+  ![image](https://user-images.githubusercontent.com/69381903/166095639-c1c335e8-3300-4750-bc4e-964012e0840b.png)
 </details>
 
 <details>
   <summary>Document Viewer</summary>
   
-  ![image](https://user-images.githubusercontent.com/69381903/163735207-32564b93-95e9-4ed4-8d99-6faade09aab2.png)
+  ![image](https://user-images.githubusercontent.com/69381903/166095643-ed123071-2633-4baa-8eeb-b2c4fc316384.png)
 </details>
 
 # 📚 License
