@@ -25,8 +25,5 @@ export const catchAxiosError = (window: Window & typeof globalThis, err: AxiosEr
                 console.error(err.response)
             };
         }
-    } else {
-        reportTelemetry(window, err, 2);
-        console.error(err);
     }
 }
