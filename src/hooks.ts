@@ -52,3 +52,9 @@ export async function handle({ event, resolve }) {
 
     return response;
 }
+
+export async function getSession(event) {
+    return {
+        url: event.locals.url
+    }
+}

@@ -10,3 +10,9 @@
 .montserrat {
     font-family: 'Montserrat', sans-serif;
 }
+
+@layer components {
+    .component-box {
+        @apply bg-slate-50 border w-full h-full text-black rounded p-4 flex flex-col gap-4 hover:bg-slate-100 duration-[250ms];
+    }
+}

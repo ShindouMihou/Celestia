@@ -50,7 +50,7 @@
 </svelte:head>
 
 <div class="py-12 flex flex-col-reverse md:flex-row gap-4 w-full max-w-[3168px] m-auto">
-    <div class="bg-white rounded md:w-72 drop-shadow-md">
+    <div class="border rounded md:w-72">
         <div class="flex flex-col p-3 gap-4">
             <h2 class="text-lg font-bold break-words">{glassbox}</h2>
             <div class="flex flex-col gap-1" id="glassboxes">
@@ -66,7 +66,7 @@
             </div>
         </div>
     </div>
-    <div class="bg-white rounded drop-shadow-md md:w-96 flex-grow">
+    <div class="border rounded md:w-96 flex-grow">
         <div class="flex flex-col gap-4 p-4">
             {#if document == null}
             <div class="w-full h-full bg-gray-100 animate-pulse p-32"></div>

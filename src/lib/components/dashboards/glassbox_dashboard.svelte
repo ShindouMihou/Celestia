@@ -7,16 +7,22 @@
     import decoder from '$lib/decoder'
     import { catchAxiosError, reportTelemetry } from "$lib/telemetry";
     import { UrlManipulator } from '$lib/url'
-    import { Icon, QuestionMarkCircle } from "svelte-hero-icons";
+    import { Icon, LightningBolt, QuestionMarkCircle } from "svelte-hero-icons";
 
     let glassboxes: any[];
     let glassbox: string;
     let next: string;
+    let loading: boolean = false
+    let scroller;
     let documents: any[];
-    let url;
+    let url: UrlManipulator;
+    let page = 0
+
+    let destinationPage = 0
 
     onMount(async () => {
         url =  new UrlManipulator(window);
+
         axios.get('/api/glassboxes')
             .then(response => glassboxes = response.data)
             .catch(err => catchAxiosError(window, err));
@@ -29,7 +35,25 @@
         }
 
         load();
+
+        scroller = new IntersectionObserver(async (entries) => {
+            if (entries[0].intersectionRatio <= 0) return
+
+            if (next) {
+                if (loading) return
+
+                loadMore()
+            }
+        })
+
+        scroller.observe(document.querySelector('#__tunnelVision'))
     })
+
+    function loadMoreUntilDestinationPage() {
+        if (page < destinationPage) {
+            loadMore(loadMoreUntilDestinationPage)
+        }
+    }
 
     /**
      * Performs a GET request to the specified URI and performs the given function if the 
@@ -50,9 +74,15 @@
      * @param glassBoxName  The name of the glassbox to move into.
      */
     async function move(glassBoxName) {
+        loading = true
         glassbox = glassBoxName;
+        page = 0;
+        destinationPage = 0;
+
+
         documents = null;
         window.history.pushState({}, '', `/dashboard/${glassbox}`);
+        url.searchParams.set('page', '0')
 
         load();
     }
@@ -65,6 +95,13 @@
         return request(`/api/glassbox/${glassbox}`, (response) => {
             documents = response.data.data;
             next = response.data.next;
+
+            if (url.searchParams.get('page')) {
+                destinationPage = Number.parseInt(url.searchParams.get('page'))
+
+                loadMore(loadMoreUntilDestinationPage)
+            }
+            loading = false
         }).then(() => document.querySelector('#documents').scrollIntoView({
             behavior: 'smooth'
         }));
@@ -74,11 +111,22 @@
      * Loads more results of the current result, this requires the next variable 
      * to be instiated and of a non-faulty value.
      */
-    async function loadMore() {
+    async function loadMore(onFulfilled = () => {}) {
         if (next) {
+            loading = true
+            scroller.unobserve(document.querySelector('#__tunnelVision'))
+
             request(next, (response) => {
                 documents = documents.concat(response.data.data);
                 next = response.data.next;
+
+                page += 1
+                url.searchParams.set('page', page.toString())
+                window.history.pushState({}, '', `/dashboard/${glassbox}${url.stringify(url.searchParams)}`);
+
+                loading = false
+                scroller.observe(document.querySelector('#__tunnelVision'))
+                onFulfilled()
             });
         }
     }
@@ -112,7 +160,7 @@
 </svelte:head>
 
 <div class="py-12 flex flex-col gap-4 w-full max-w-[3168px] m-auto">
-    <div class="bg-white rounded w-full drop-shadow-md">
+    <div class="rounded w-full border">
         <div class="flex flex-col p-3 gap-2">
             <div class="flex flex-row gap-1 items-center">
                 <h2 class="text-lg font-bold">Filter</h2>
@@ -122,14 +170,14 @@
             </div>
             <textarea class="p-4 text-md font-light bg-gray-100 rounded outline-none" placeholder="FIELD=VALUE" id="_filter"></textarea>
             <button class="cursor-pointer" on:click={filter} transition:fade>
-                <div class="bg-black text-white rounded p-2 flex flex-col hover:opacity-80 gap-4 lg:w-32">
-                    <h3 class="font-bold ">Filter</h3>
+                <div class="bg-slate-100 border text-black rounded p-2 flex flex-col hover:opacity-80 gap-4 lg:w-32">
+                    <h3 class="font-medium ">Filter</h3>
                 </div>
             </button>
         </div>
     </div>
     <div class="flex flex-col md:flex-row gap-4 w-full">
-        <div class="bg-white rounded md:w-72 drop-shadow-md">
+        <div class="rounded md:w-72 border">
             <div class="flex flex-col p-3 gap-4">
                 <h2 class="text-lg font-bold">Glassboxes</h2>
                 <div class="flex flex-col gap-1" id="glassboxes">
@@ -140,7 +188,7 @@
                     {:else}
                         {#each glassboxes as item}
                         <div class="cursor-pointer h-full" on:click={move(item.name)} transition:fade>
-                            <div class="bg-black h-full text-white rounded p-4 flex flex-col hover:opacity-80 gap-4">
+                            <div class="component-box">
                                 <h3 class="font-bold ">{item.name}</h3>
                                 <p>{Intl.NumberFormat().format(item.count)} documents</p>
                             </div>
@@ -150,10 +198,10 @@
                 </div>
             </div>
         </div>
-        <div class="bg-white rounded drop-shadow-md md:w-96 flex-grow">
+        <div class="border rounded md:w-96 flex-grow">
             <div class="flex flex-col gap-4 p-4">
                 <h2 class="text-lg font-bold">Documents</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-2" id="documents">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 2xl:grid-cols-2 gap-2" id="documents">
                     {#if documents == null}
                         {#each { length: 5 } as _, i}
                         <Loader></Loader>
@@ -164,12 +212,12 @@
                         {/each}
                     {/if}
                 </div>
-                {#if next != null}
-                    <button class="cursor-pointer" on:click={loadMore} transition:fade>
-                        <div class="bg-black text-white rounded p-4 flex flex-col hover:opacity-80 gap-4 lg:w-32">
-                            <h3 class="font-bold ">Load More</h3>
-                        </div>
-                    </button>
+                <div id="__tunnelVision"/>
+                {#if loading}
+                <div class="w-full align-middle justify-center flex flex-row gap-4 m-auto py-6 animate-bounce">
+                    <Icon src={LightningBolt} class="h-6 w-6" solid/>
+                    <p>Loading...</p>
+                </div>
                 {/if}
             </div>
         </div>
