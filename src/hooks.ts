@@ -43,10 +43,9 @@ export async function handle({ event, resolve }) {
         }});
     }
 
-    if (signed && url.pathname.includes('/gateway')) {
+    if (signed && (url.pathname.includes('/gateway') || url.pathname === '/')) {
         return new Response('', { status: 303, headers: {
-            Location: origin+"/gateway",
-            'Set-Cookie': 'firefly=; Path=/; Max-Age=-1'
+            Location: origin+"/dashboard"
         }});
     }
 
