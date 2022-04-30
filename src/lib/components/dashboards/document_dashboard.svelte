@@ -3,7 +3,6 @@
     import Loader from "$lib/components/loaders/loader.svelte";
     import { onMount } from "svelte";
     import axios from 'axios';
-    import { fade } from "svelte/transition";
     import { catchAxiosError, reportTelemetry } from "$lib/telemetry";
     import { UrlManipulator } from "$lib/url";
 
@@ -35,7 +34,12 @@
                 if (!document) {
                     reportTelemetry(window, response, 1);
                     setTimeout(() => window.location.reload(), 1500);
+                    return
                 }
+
+                window.document.getElementById('_documentView').scrollIntoView({
+                    behavior: 'smooth'
+                })
             }).catch(err => catchAxiosError(window, err));
     });
 
@@ -67,7 +71,7 @@
         </div>
     </div>
     <div class="border rounded md:w-96 flex-grow">
-        <div class="flex flex-col gap-4 p-4">
+        <div class="flex flex-col gap-4 p-4" id="_documentView">
             {#if document == null}
             <div class="w-full h-full bg-gray-100 animate-pulse p-32"></div>
             {:else}
