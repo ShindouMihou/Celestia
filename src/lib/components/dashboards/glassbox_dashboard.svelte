@@ -81,6 +81,8 @@
 
 
         documents = null;
+        url.searchParams.delete('query')
+        document.querySelector('#_filter').value = ''
         window.history.pushState({}, '', `/dashboard/${glassbox}`);
         url.searchParams.set('page', '0')
 
@@ -92,6 +94,13 @@
      * into the page.
      */
     async function load() {        
+        if (url.searchParams.get('query')) {
+            document.querySelector('#_filter').value = atob(url.searchParams.get('query'))
+            filter()
+            return
+        }
+
+        loading = true
         return request(`/api/glassbox/${glassbox}`, (response) => {
             documents = response.data.data;
             next = response.data.next;
@@ -140,7 +149,11 @@
      */
     async function filter() {
         const query = document.querySelector('#_filter');
+        loading = true
         if (!query.value) {
+            url.searchParams.delete('query')
+            window.history.pushState({}, '', `/dashboard/${glassbox}${url.stringify(url.searchParams)}`);
+
             load();
             return;
         }
@@ -149,10 +162,17 @@
             request(`/api/glassbox/${glassbox}?json=${btoa(JSON.stringify(decoder(query)))}`, (response) => {
                 documents = response.data.data;
                 next = response.data.next;
+
+                url.searchParams.set('query', btoa(JSON.stringify(decoder(query))))
+                window.history.pushState({}, '', `/dashboard/${glassbox}${url.stringify(url.searchParams)}`);
+                loading = false
             }).then(() => document.querySelector('#documents').scrollIntoView({
                 behavior: 'smooth'
             }));
+            return
         }
+
+        loading = false
     }
 </script>
 <svelte:head>
