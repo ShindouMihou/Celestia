@@ -1,9 +1,15 @@
 ![Celestia Banner](https://user-images.githubusercontent.com/69381903/163735091-62a62124-ba88-48df-8627-e98b65de068a.png)
-Celestia is the formal successor to Celebi's front-end client (one of our internal little logging thing) and REST API which aims to make logging more beautiful than before. Unlike Celebi, Celestia uses a single access token located in your `.env` file for authentication which thereby saves time and effort of creating accounts.
+<div align="center">
+  A simple trace logging viewer built around MongoDB and Sveltekit. 
+</div>
 
-Also unlike Celebi, Celestia is powered by Sveltekit all the way which allows reactivity, creating a more dynamic look of the pages.
+#
+You can view a live demonstration of Celestia on https://celestia.mihou.pw with the following access token:
+```shell
+celestia-demo
+```
 
-## 📦 Installation
+### 📦 Installation
 If you do not already have a Celebi MongoDB Docker running then you can upstart one by running the `docker-compose up -d` which generates a MongoDB Docker but this doesn't include the Celebi Docker itself. To install Celestia, all you need to do is run the following command:
 ```shell
 docker build -t celestia .
@@ -14,14 +20,14 @@ Afterwards, you can create a new container from the image via:
 docker run -d -i -t --env-file .env -p 3000:3000 --restart=always --name celestia celestia
 ```
 
-## 🧭 Routes
+### 🧭 Routes
 There are only a few routes that exists in Celestia:
 - `/gateway`: The authentication page (required before accessing protected routes).
 - `/dashboard/`: The general dashboard page which one can see all the documents and glassboxes.
 - `/dashboard/{glassbox}/`: The same as above except that it directs to a specific glassbox.
 - `/dashboard/{glassbox}/{document}/`: The document page where you can view the details of the documents.
 
-## 📓 Configuration
+### 📓 Configuration
 There are four required configuration for Celestia and those include:
 - `MONGO_URI`: The connection URI to the MongoDB instance.
 - `ACCESS_TOKEN`: The public-facing access-token required by users to view the logs.
