@@ -78,20 +78,20 @@
             <div class="flex flex-col gap-2" id="document[base]">
                 <div class="flex flex-col gap-2" id="document[head]">
                     <div>
-                        <h2 class="text-lg font-bold break-words">{document._id}</h2>
+                        <h2 class="text-md md:text-lg font-bold break-words">{document._id}</h2>
                         <p class="text-md font-medium break-words">{document._event} • {new Date(document._date).toString()}</p>
                     </div>
                 </div>
                 {#if document._message}
                 <div class="bg-gray-100 rounded p-4">
-                    <p class="break-words">{document._message}</p>
+                    <p class="break-normal">{document._message}</p>
                 </div>
                 {/if}
-                <div class="flex flex-row gap-4 flex-wrap">
+                <div class="flex flex-row gap-4 flex-wrap max-w-full">
                     {#each extras() as item}
                     <div class="bg-gray-100 rounded p-4">
-                        <h3 class="text-md font-bold uppercase break-words">{item[0]}</h3>
-                        <p class="text-md font-light break-words">{item[1]}</p>
+                        <h3 class="text-md font-bold uppercase break-all">{item[0]}</h3>
+                        <p class="text-md font-light break-all">{item[1]}</p>
                     </div>
                     {/each}
                 </div>
