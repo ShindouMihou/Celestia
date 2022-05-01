@@ -99,7 +99,7 @@
             document.querySelector("#_filter").value = atob(
                 url.searchParams.get("query")
             );
-            filter();
+            filter(onFulfilled);
             return;
         }
 
@@ -171,9 +171,8 @@
      * - You can use Date(value) as a value to a property to translate the value into a date.
      * - Those decoders are case-sensitive.
      */
-    async function filter() {
+    async function filter(onFulfilled = () => {}) {
         const query = document.querySelector("#_filter");
-        loading = true;
         if (!query.value) {
             url.searchParams.delete("query");
             window.history.pushState(
@@ -187,6 +186,7 @@
         }
 
         if (glassbox) {
+            loading = true;
             request(
                 `/api/glassbox/${glassbox}?json=${btoa(
                     JSON.stringify(decoder(query))
@@ -206,13 +206,15 @@
                             url.searchParams
                         )}`
                     );
-                    loading = false;
+
+                    onFulfilled()
                 }
-            ).then(() =>
+            ).then(() => {
+                loading = false;
                 document.querySelector("#documents").scrollIntoView({
                     behavior: "smooth",
                 })
-            );
+            });
             return;
         }
 
