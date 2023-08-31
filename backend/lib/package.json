@@ -9,6 +9,6 @@
   "author": "shindoumihou",
   "license": "Apache-2.0",
   "dependencies": {
-    "mongodb": "^4.5.0"
+    "mongodb": "^4.17.0"
   }
 }
